@@ -1,0 +1,33 @@
+Link: https://circlecoder.com/customers-who-bought-all-products/
+
+create table Customer
+(
+cust_id int,
+prod_id int);
+
+create table Product 
+(
+prod_id int);
+
+insert into Customer
+values
+(1,5),
+(2,6),
+(3,5),
+(3,6),
+(1,6);
+
+insert into Product
+values
+(5),(6);
+*****************************************************************************
+
+
+select * from Customer;
+select * from Product;
+
+
+select cust_id
+from Customer
+group by 1
+having count(distinct prod_id)=(select count(distinct prod_id) from Product)

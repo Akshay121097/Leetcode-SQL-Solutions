@@ -1,0 +1,29 @@
+
+Link - https://circlecoder.com/students-report-by-geography/
+
+
+create table Student 
+(
+name varchar(20),
+continent varchar(20));
+
+insert into Student
+values
+('Jack','America'),('Pascal','Europe'),('Xi','Asia'),('Jane','America');
+
+************************************************************************************************
+select * from Student;
+
+
+with cte as (select *,
+row_number() over(partition by continent order by name ) as rnk
+from Student)
+
+select 
+max(case when continent='America' then name end) as America,
+max(case when continent='Europe' then name end) as Europe,
+max(case when continent='Asia' then name end) as Asia
+from cte
+group by rnk
+
+

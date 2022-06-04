@@ -1,0 +1,66 @@
+Link: https://circlecoder.com/average-salary-departments-vs-company/
+
+create table Salary
+(
+id int,
+emp_id int,
+amount int,
+pay_date varchar(20));
+
+insert into Salary
+values
+(1,1,9000,'2017-03-31'),
+(2,2,6000,'2017-03-31'),
+(3,3,10000,'2017-03-31'),
+(4,1,7000,'2017-02-28'),
+(5,2,6000,'2017-02-28'),
+(6,3,8000,'2017-02-28');
+
+create table Employee
+(
+emp_id int,
+dept_id int
+);
+
+insert into Employee
+values
+(1,1),(2,2),(3,2);
+
+
+***********************************************************************************
+
+
+select * from Salary;
+select * from Employee;
+
+
+with cte as (select s.*,e.dept_id
+
+from Salary s
+inner join Employee e 
+on s.emp_id = e.emp_id),
+
+
+dept_salary as (select left(pay_date,7) as date, dept_id, avg(amount) as dep_sal
+from cte 
+group by 1,2),
+
+
+com_sal as (select left(pay_date,7) as date ,avg(amount) as com_sal
+from cte 
+group  by 1)
+
+select dept_salary.date,
+dept_id,
+case when dep_sal>com_sal then 'Higher'
+    when  dep_sal<com_sal then 'Lower'
+    else 'Same'
+    end as comparison
+from dept_salary
+inner join com_sal
+on dept_salary.date = com_sal.date
+order by 1 desc,2;
+
+
+
+

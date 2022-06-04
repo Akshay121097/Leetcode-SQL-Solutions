@@ -1,0 +1,37 @@
+
+Link: https://circlecoder.com/active-users/
+create table login
+(
+id int,
+l_date varchar(20));
+
+insert into login
+values
+(7, '2020-05-30' ),
+(1, '2020-05-30' ),
+(7, '2020-05-31' ),
+(7, '2020-06-01'),
+(7, '2020-06-02'),
+(7, '2020-06-02'),
+(7, '2020-06-03'),
+(1, '2020-06-07'),
+(7, '2020-06-10');
+
+************************************************************************
+
+select * from login;
+
+with cte as (
+select id,l_date
+from login
+group by 1,2),
+
+cte1 as (select *,
+row_number() over(partition by id order by l_date),
+cast(l_date as date) - cast(row_number() over(partition by id order by l_date) as int) as rnk
+from cte)
+
+select id 
+from cte1
+group by rnk,id
+having count(1)>=5;

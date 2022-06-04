@@ -1,0 +1,25 @@
+Link: https://circlecoder.com/find-the-start-and-end-number-of-continuous-ranges/
+
+
+create table Log
+(id int);
+
+
+insert into Log
+values
+(1),(2),(3),(7),(8),(10);
+
+*******************************************************************
+
+select * from Log;
+
+with cte as (select *, 
+id-row_number() over() as rnk 
+from Log)
+
+select min(id), max(id)
+from cte 
+group by rnk 
+order by min(id);
+
+

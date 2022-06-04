@@ -1,0 +1,28 @@
+
+Link -  https://circlecoder.com/exchange-seats/
+create table Data(
+id int,
+name varchar(20));
+
+
+insert into Data
+values
+(1,'Abbot'),
+(2,'Doris'),
+(3,'Emerson'),
+(4,'Green'),
+(5,'Jeames');
+
+*********************************************************************************
+
+
+select * from Data;
+
+update Data
+set id = (
+case  
+   when id%2=1 and id=(select max(id) from Data) then id
+   when id%2=1 then id+1
+   else id-1
+   end);
+   

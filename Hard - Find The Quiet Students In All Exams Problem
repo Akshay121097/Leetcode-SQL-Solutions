@@ -33,10 +33,26 @@ values
 (4	, 'Jonathan'),     
 (5	, 'Will');
 
-*****************************************************************************************
+--*****************************************************************************************
 select * from Exam;
 
 select * from Student;
+
+
+with cte as (select *,
+dense_rank() over(partition by exam_id order by marks desc) as rn_high,
+dense_rank() over(partition by exam_id order by marks ) as rn_low
+from Exam)
+
+
+select distinct st_id from Exam 
+where st_id not in (select distinct st_id 
+from cte 
+where rn_high=1 or rn_low=1)
+
+
+OR
+
 
 with cte as(
 select *,

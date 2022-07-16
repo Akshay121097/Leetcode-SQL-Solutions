@@ -1,0 +1,30 @@
+ create table Logs 
+ (
+ Id int,
+ num int);
+ 
+ insert into  Logs
+ values
+ (1,1),(2,1),(3,1),(4,2),(5,1),(6,2),(7,2),(8,2);
+ 
+ 
+ --*************************************************************************************
+ select * from Logs;
+ 
+ 
+ with cte as (select num,count(1) as cnt
+ from 
+ (select *,
+ id-row_number() over(partition by num order by id) as rn
+ from Logs)A 
+ group by rn,num)
+ 
+ select num
+ from cte 
+ where cnt>=3
+ 
+ 
+  num 
+-----
+   2
+   1
